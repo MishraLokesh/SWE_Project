@@ -1,11 +1,11 @@
+require('dotenv').config()
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 const Web3 = require('web3')
 const {abi, bytecode} = require('./compile.js');
 
 let provider = new HDWalletProvider(
-                                                                                                                                              'end inquiry kingdom party glow topic trip rely image man guitar matter', "https://rinkeby.infura.io/v3/600f2be8cdfd4634be1376f1f858d9eb"
+  process.env.mnemonic, process.env.infura_API
 );
-
 
 const web3 = new Web3(provider)
 
