@@ -16,7 +16,7 @@ beforeEach(async () => {
   
   accounts = await web3.eth.getAccounts()
   inbox = await new web3.eth.Contract(JSON.parse(JSON.stringify(abi))).deploy({data: bytecode, arguments: ['Hii there!!']}).send({from: accounts[0], gas:'1000000'});
-  // message = await inbox.methods.message().call();
+  console.log(inbox);
 });
 
 describe('Inbox', () => {
