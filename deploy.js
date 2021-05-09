@@ -26,9 +26,10 @@ const deploy = async () => {
   const accounts = await web3.eth.getAccounts();
   console.log(accounts[0]);
   const results = await new web3.eth.Contract(JSON.parse(JSON.stringify(abi)))
-     .deploy({data: '0x' + bytecode, arguments: ['Hi there!']}) // add 0x bytecode
-     .send({from: accounts[0], gas:'500000'});
-  console.log("contract deployed to address: ", results.options.address);
+     .deploy({data: '0x' + bytecode}) // add 0x bytecode
+     .send({from: accounts[0], gas:'1000000'});
+  console.log("abi: ", JSON.stringify(abi));
+  console.log("contract successfully deployed to address: ", results.options.address);
   }
   catch(error) {
     console.error('error: ', error);
