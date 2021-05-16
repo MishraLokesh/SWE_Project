@@ -1,7 +1,19 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.8.4;
 
-contract Health_Hub {
+contract Factory {
+    address[] public deployedContracts;
+
+    function createContract() public {
+        HealthHub newContract = new HealthHub();
+        deployedContracts.push(address(newContract));
+    }
+    function getDeployedContracts() public view returns(address[] memory) {
+        return deployedContracts;
+    }
+}
+
+contract HealthHub {
     mapping(address => bool) public requesters;
     uint public requestersCount;
     
@@ -16,7 +28,7 @@ contract Health_Hub {
 
     event DATA(string description, address manager);
 
-    
+
     uint numRequests;
     mapping (uint => Data) public data;
     
@@ -45,16 +57,10 @@ contract Health_Hub {
         data[index].finalApproved[req] = true;
     }
     
-    function dispayData(uint index) public {
+    function dispayData(uint index) view public {
         require((data[index].manager == msg.sender) || (data[index].finalApproved[msg.sender]));
-        emit DATA(data[index].description, data[index].manager);
+        // emit DATA(data[index].description, data[index].manager);
         
     }
 
 }
-
-
-
-
-
-

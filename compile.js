@@ -1,34 +1,42 @@
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const solc = require('solc');
 
-const Contractpath = path.resolve(__dirname, 'Contracts', 'Health_Hub.sol');
+const buildPath = path.resolve(__dirname, 'build');
+fs.removeSync(buildPath);
+
+const Contractpath = path.resolve(__dirname, 'contracts', 'HealthHub.sol');
 const source = fs.readFileSync(Contractpath, 'UTF-8');
 
 var input = {
-    language: 'Solidity',
-    sources: {
-        'Health_Hub.sol' : {
-            content: source
-        }
-    },
-    settings: {
-        outputSelection: {
-            '*': {
-                '*': [ '*' ]
-            }
-        }
-    }
+  language: 'Solidity',
+  sources: {
+      'HealthHub.sol' : {
+          content: source
+      }
+  },
+  settings: {
+      outputSelection: {
+          '*': {
+              '*': [ '*' ]
+          }
+      }
+  }
 };
 
+
+
 var output = JSON.parse(solc.compile(JSON.stringify(input)));
+console.log(output);
 
-// module.exports = output.contracts;
+fs.ensureDirSync(buildPath);
 
-const abi = output.contracts['Health_Hub.sol']['Health_Hub'].abi;
-const bytecode = output.contracts['Health_Hub.sol']['Health_Hub'].evm.bytecode.object;
-module.exports = {abi, bytecode}
+output = output.contracts['HealthHub.sol'];
 
-// console.log(output.contracts['Lottery.sol']['Lottery'].abi)
-// console.log(output.contracts['Lottery.sol']['Lottery'].evm.bytecode.object)
+for (let contract in output) {
+  fs.outputJsonSync(
+    path.resolve(buildPath, contract.replace(':', '') + '.json'), 
+    output[contract]
+  );
+}
 
