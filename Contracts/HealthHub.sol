@@ -57,9 +57,9 @@ contract HealthHub {
         data[index].finalApproved[req] = true;
     }
     
-    function dispayData(uint index) view public {
+    function dispayData(uint index) public {
         require((data[index].manager == msg.sender) || (data[index].finalApproved[msg.sender]));
-        // emit DATA(data[index].description, data[index].manager);
+        emit DATA(data[index].description, data[index].manager);
         
     }
 
